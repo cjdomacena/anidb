@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import toast from 'react-hot-toast';
-import { Link, useNavigate } from 'react-router-dom'
+import {  useNavigate } from 'react-router-dom'
 import { supabase } from '../client'
 function Signup()
 {

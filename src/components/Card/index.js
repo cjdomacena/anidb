@@ -1,5 +1,5 @@
 import { BookmarkIcon, StarIcon } from '@heroicons/react/outline';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState, useCallback } from 'react';
 import toast from 'react-hot-toast';
 import { supabase } from '../../client';
 import { UserContext } from './../../context'
@@ -75,23 +75,26 @@ function Card({ props, bookmarked })
 
 
 
-	function isBookmarked(bookmarked)
+	const isBookmarked = useCallback(
+		(bookmarked) =>
+		{
+			if (bookmarked)
+			{
+				const bm = bookmarked.filter((i) => i.mal_id === props.mal_id);
+				if (bm.length > 0) return true;
+				else return false;
+			} else
+			{
+				return false
+			}
+
+		}, [props.mal_id])
+
+
+	useEffect(() =>
 	{
-		if (bookmarked)
-		{
-			const bm = bookmarked.filter((i) => i.mal_id === props.mal_id);
-			if (bm.length > 0) return true;
-			else return false;
-		} else
-		{
-			return false
-		}
-
-	}
-
-	useEffect(() => {
 		setSelectedBookmark(isBookmarked(bookmarked))
-	}, [bookmarked])
+	}, [bookmarked, isBookmarked])
 
 
 

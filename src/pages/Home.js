@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useCallback, useMemo } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useInfiniteQuery } from "react-query";
 import { getCurrentSeason } from "../api";
 import { useInView } from 'react-intersection-observer'
@@ -66,7 +66,7 @@ function Home()
 					setBookmarked(temp);
 				}
 		}
-	}, [fetchNextPage, hasNextPage, inView, session])
+	}, [fetchNextPage, hasNextPage, inView, session, setBookmarked])
 
 
 
