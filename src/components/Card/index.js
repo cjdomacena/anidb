@@ -1,9 +1,9 @@
 import { BookmarkIcon, StarIcon } from '@heroicons/react/outline';
-import { useContext, useEffect, useState, useCallback } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { supabase } from '../../client';
 import { UserContext } from './../../context'
-function Card({ props, bookmarked })
+function Card({ props, isBookmarked })
 {
 	const { session } = useContext(UserContext);
 	const [selectedBookmark, setSelectedBookmark] = useState(false);
@@ -14,16 +14,15 @@ function Card({ props, bookmarked })
 
 	const handleAddBookmark = async () =>
 	{
+		setLoading(true);
 		if (session)
 		{
 			const current = selectedBookmark ? false : true
 			setSelectedBookmark(current);
 			if (current)
 			{
-				setLoading(true);
-				const { error } = await supabase.from('bookmarks').insert([{
-					user_id: session.user.id, mal_id: props.mal_id
-				}]);
+		
+				const { error } = await supabase.rpc('add_bookmark', { 'param': props.mal_id });
 				if (!error)
 				{
 					setLoading(false);
@@ -36,8 +35,7 @@ function Card({ props, bookmarked })
 				}
 			} else if (!current)
 			{
-				setLoading(true);
-				const { error } = await supabase.from('bookmarks').delete().match({ user_id: session.user.id, mal_id: props.mal_id })
+				const { error } = await supabase.rpc('remove_bookmark', { 'mal_id': props.mal_id })
 				if (!error)
 				{
 					toast.error(`${ props.title } successfully removed from bookmarks!`, { className: "bg-slate-600 border rounded border-slate-800 text-white" })
@@ -47,7 +45,6 @@ function Card({ props, bookmarked })
 					toast.error(error.message)
 					setLoading(false);
 				}
-
 			}
 		} else
 		{
@@ -73,30 +70,10 @@ function Card({ props, bookmarked })
 		}
 	}
 
-
-
-	const isBookmarked = useCallback(
-		(bookmarked) =>
-		{
-			if (bookmarked)
-			{
-				const bm = bookmarked.filter((i) => i.mal_id === props.mal_id);
-				if (bm.length > 0) return true;
-				else return false;
-			} else
-			{
-				return false
-			}
-
-		}, [props.mal_id])
-
-
-	useEffect(() =>
-	{
-		setSelectedBookmark(isBookmarked(bookmarked))
-	}, [bookmarked, isBookmarked])
-
-
+	useEffect(() => {
+		// Will change state when isBookmarked changes.
+		setSelectedBookmark(isBookmarked);
+	},[isBookmarked])
 
 	return (
 		<div className="w-full p-4">

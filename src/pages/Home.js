@@ -31,40 +31,43 @@ function Home()
 			}
 		})
 
+	function isBookmarked(mal_id, bookmark)
+	{
+		if (bookmark)
+		{
+			return (bookmark.mal_ids).includes(mal_id)
+		} else
+		{
+			return false;
+		}
+
+	}
 
 	useEffect(() =>
 	{
-		getBookmarked();
-		if (inView)
+		async function getBookmarked()
 		{
 
+			const { data, error } = await supabase.from('bookmarks').select('mal_ids').match({ user_id: session.user.id });
+			if (error)
+			{
+				toast.error(error.message);
+			} else
+			{
+				setBookmarked(data[0]);
+			}
+		}
+		if (session && hasNextPage)
+		{
+			getBookmarked();
+		}
+		if (inView)
+		{
 			setPage(prev => prev + 1);
 			if (hasNextPage)
 			{
 				fetchNextPage();
 			}
-		}
-		
-		async function getBookmarked()
-		{
-				let temp = null;
-				try
-				{
-					if(session) {
-						const { data, error } = await supabase.from('bookmarks').select('mal_id').match({ user_id: session.user.id });
-						if (error)
-						{
-							toast.error(error.message);
-						}
-						temp = data;
-					}
-				} catch (error)
-				{
-					toast.error(error.message  || "Something went wrong...")
-				} finally
-				{
-					setBookmarked(temp);
-				}
 		}
 	}, [fetchNextPage, hasNextPage, inView, session, setBookmarked])
 
@@ -77,7 +80,7 @@ function Home()
 				{isFetching && <><LoadingCard /><LoadingCard /><LoadingCard /><LoadingCard /><LoadingCard /><LoadingCard /><LoadingCard /></>}
 				{data && data?.pages.map((page, index) => (
 					<React.Fragment key={index}>
-						{page.data.map(item => <Card props={item} key={item.mal_id} bookmarked={bookmarked} />)}
+						{page.data.map(item => <Card props={item} key={item.mal_id} isBookmarked={isBookmarked(item.mal_id, bookmarked)} />)}
 					</React.Fragment>
 				))}
 			</div>
