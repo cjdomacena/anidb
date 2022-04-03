@@ -1,4 +1,3 @@
-import { BookmarkIcon, StarIcon } from '@heroicons/react/outline'
 
 function LoadingCard() {
 	return <div className="w-full p-4">

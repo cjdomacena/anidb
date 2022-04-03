@@ -1,3 +1,4 @@
+import {supabase} from './../client'
 const BASE_URL = "https://api.jikan.moe/v4"
 
 export const getRecommendations = async ({page}) =>
@@ -14,3 +15,9 @@ export const getCurrentSeason = async ( page ) =>
 	const res = await req.json();
 	return res;
 }
+
+// export const insertProfile = async (profile) => {
+// 	const {data, error} = await supabase.from('profiles').insert([{username: profile.username}])
+
+// 	return data;
+// }
