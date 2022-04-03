@@ -3,8 +3,10 @@ import { Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import { UserProvider } from './context';
 import './index.css';
+import CreateAccount from './pages/CreateAccount';
 import Home from './pages/Home';
-import Login from './pages/Login';
+import Login from './pages/Signup';
+import SuccessSignup from './pages/SuccessSignup';
 
 
 function App()
@@ -15,7 +17,8 @@ function App()
 				<Navbar />
 				<Routes>
 					<Route path='/' element={<Home />} />
-					<Route path="/login" element={<Login />} />
+					<Route path="/signup" element={<Login />} />
+					<Route path="/success-signup" element={<SuccessSignup />} />
 				</Routes>
 				<Toaster position='top-right' />
 			</div>

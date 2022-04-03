@@ -6,16 +6,21 @@ export const UserContext = createContext({});
 export const UserProvider = ({ children }) =>
 {
 	const [session, setSession] = useState(null);
+	const [bookmarked, setBookmarked] = useState(null);
+
+
 	useEffect(() =>
 	{
 		setSession(supabase.auth.session());
 
 		supabase.auth.onAuthStateChange((_event, session) =>
 		{
-			if(_event === 'SIGNED_IN') {
+			if (_event === 'SIGNED_IN')
+			{
 				setSession(session);
 			}
-			if(_event === 'SIGNED_OUT') {
+			if (_event === 'SIGNED_OUT')
+			{
 				setSession(null)
 			}
 		})
@@ -23,7 +28,9 @@ export const UserProvider = ({ children }) =>
 	return (
 		<UserContext.Provider value={{
 			session,
-			setSession
+			setSession,
+			bookmarked,
+			setBookmarked
 		}}>
 			{children}
 		</UserContext.Provider>
