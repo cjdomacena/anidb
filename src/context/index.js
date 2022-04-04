@@ -1,4 +1,4 @@
-import { createContext } from "react";
+import { createContext, useMemo } from "react";
 import { useState, useEffect } from "react";
 import { supabase } from "../client";
 export const UserContext = createContext({});
@@ -7,7 +7,16 @@ export const UserProvider = ({ children }) =>
 {
 	const [session, setSession] = useState(null);
 	const [bookmarked, setBookmarked] = useState(null);
-
+	const [favorites, setFavorites] = useState(null);
+	const value = useMemo(() =>
+	({
+		session,
+		setSession,
+		bookmarked,
+		setBookmarked,
+		favorites,
+		setFavorites
+	}), [session, bookmarked, favorites])
 
 	useEffect(() =>
 	{
@@ -24,14 +33,13 @@ export const UserProvider = ({ children }) =>
 				setSession(null)
 			}
 		})
+
+
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
 	return (
-		<UserContext.Provider value={{
-			session,
-			setSession,
-			bookmarked,
-			setBookmarked
-		}}>
+		<UserContext.Provider value={value}>
 			{children}
 		</UserContext.Provider>
 	)

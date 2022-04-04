@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { supabase } from "../../client";
 import toast from "react-hot-toast";
 import { useContext } from "react";
@@ -21,11 +21,18 @@ function LoggedIn()
 		setSession(null);
 	}
 	return (
-		<ul className="space-x-4 flex items-center">
-			<li className="bg-blue-900 p-2 rounded hover:bg-blue-700"><Link to="/favorites">Favorites</Link></li>
-			<li className="bg-blue-900 p-2 rounded hover:bg-blue-700"><Link to="/bookmarks">Bookmarks</Link></li>
-			<li className="bg-red-900 p-2 rounded hover:bg-red-700"><button onClick={handleSignOut}>Logout</button></li>
-		</ul>)
+		<div className="space-x-4 flex items-center">
+			<NavLink to="/" className={({ isActive }) =>
+				isActive ? "bg-blue-700 p-2 rounded hover:bg-blue-900" : "hover:bg-blue-700 p-2 rounded"
+			}>Home</NavLink>
+			<NavLink to="/favorites" className={({ isActive }) =>
+				isActive ? "bg-blue-700 p-2 rounded hover:bg-blue-900" : "hover:bg-blue-700 p-2 rounded"
+			}>Favorites</NavLink>
+			<NavLink to="/bookmarks" className={({ isActive }) =>
+				isActive ? "bg-blue-700 p-2 rounded" : "hover:bg-blue-700 p-2 rounded"
+			}>Bookmarks</NavLink>
+			<button onClick={handleSignOut} className="bg-red-900 p-2 rounded hover:bg-red-700" type="button">Logout</button>
+		</div >)
 }
 
 export default LoggedIn;
