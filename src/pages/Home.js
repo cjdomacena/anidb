@@ -1,18 +1,19 @@
-import React, { useContext, useEffect, Suspense } from "react";
+import React, { useContext, useEffect, useCallback } from "react";
 import { useInfiniteQuery } from "react-query";
 import { getCurrentSeason } from "../api";
 import { useInView } from 'react-intersection-observer'
-import LoadingCard from "../components/Card/LoadingCard";
+import LoadingCards from "../components/Card/LoadingCards";
 import Card from "../components/Card";
 import { UserContext } from "../context";
 import { supabase } from "../client";
 import toast from "react-hot-toast";
+import { isFavorite, isBookmarked } from './../utils'
 
 
 function Home()
 {
 	const { ref, inView } = useInView();
-	const { session, setBookmarked, bookmarked } = useContext(UserContext);
+	const { session, setBookmarked, bookmarked, favorites, setFavorites } = useContext(UserContext);
 	const { data, isFetching, fetchNextPage, hasNextPage, isFetchingNextPage }
 		= useInfiniteQuery('seasonal', ({ pageParam = 0 }) => getCurrentSeason(pageParam), {
 			staleTime: 1000 * 60, refetchOnWindowFocus: false,
@@ -24,49 +25,46 @@ function Home()
 			},
 		})
 
-	function isBookmarked(mal_id, bookmark)
+
+	const getBookmarked = useCallback(async () =>
 	{
-		if (bookmark)
+		if (session)
 		{
-			return (bookmark.mal_ids).includes(mal_id)
-		} else
-		{
-			return false;
-		}
-
-	}
-
-	// function displayFilteredData(data, filter) {
-	// 	let tempArr = data;
-	// 	switch (filter) {
-	// 		case 'AIRING':
-	// 			tempArr = data.map((item) => item.pages.map((anime) => anime.status === "Currently Airing"))
-	// 			return tempArr;
-	// 		case 'NOT AIRING':
-	// 			tempArr = data.map((item) => item.pages.map((anime) => anime.status === "Not yet aired"))
-	// 			return tempArr
-	// 		default:
-	// 			return tempArr;
-	// 	}
-	// }
-
-	useEffect(() =>
-	{
-		async function getBookmarked()
-		{
-
-			const { data, error } = await supabase.from('bookmarks').select('mal_ids').match({ user_id: session.user.id });
+			const { data, error } = await supabase.from('bookmarks').select('bookmarked').match({ user_id: session.user.id });
 			if (error)
 			{
 				toast.error(error.message);
 			} else
 			{
-				setBookmarked(data[0]);
+				setBookmarked(data);
 			}
 		}
+
+	}, [session, setBookmarked]);
+
+	const getFavorites = useCallback(async () =>
+	{
+		if (session)
+		{
+			const { data, error } = await supabase.from('favorites')
+				.select('favorite')
+				.match({ user_id: session.user.id })
+			if (error)
+			{
+				toast.error(error.message);
+			} else
+			{
+				setFavorites(data);
+			}
+		}
+
+	}, [session, setFavorites])
+	useEffect(() =>
+	{
 		if (session && hasNextPage)
 		{
 			getBookmarked();
+			getFavorites();
 		}
 		if (inView)
 		{
@@ -76,14 +74,9 @@ function Home()
 			}
 		}
 
-	}, [fetchNextPage, hasNextPage, inView, session, setBookmarked])
+	}, [fetchNextPage, getBookmarked, getFavorites, hasNextPage, inView, session, setBookmarked, setFavorites])
 
-	function LoadingCards()
-	{
-		return <>
-			<LoadingCard /><LoadingCard /><LoadingCard /><LoadingCard /><LoadingCard /><LoadingCard /><LoadingCard />
-		</>
-	}
+
 
 	return (
 		<section className="container mx-auto mt-12 text-white">
@@ -92,7 +85,7 @@ function Home()
 				{(isFetching && !isFetchingNextPage) && <LoadingCards />}
 				{data?.pages.map((page, index) => (
 					<React.Fragment key={index}>
-						{page.data.map(item => <Card props={item} key={item.mal_id} isBookmarked={isBookmarked(item.mal_id, bookmarked)} />)}
+						{page.data.map(item => <Card props={item} key={item.mal_id} isBookmarked={isBookmarked(item.mal_id, bookmarked)} isFavorite={isFavorite(item.mal_id, favorites)} />)}
 					</React.Fragment>
 				))}
 				{isFetchingNextPage && <LoadingCards />}
