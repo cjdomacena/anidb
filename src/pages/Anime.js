@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import { getAnimeById } from "../api";
+import imageUnavailable from '../assets/imageUnavailable.png'
 
 function Anime()
 {
@@ -100,12 +101,14 @@ function Anime()
 	} else
 	{
 		return (anime &&
-			<div className="container mx-auto mt-12">
-				<section className=" text-white   p-4 rounded shadow">
-					<div className="w-3/4 mx-auto">
-						<div className="flex justify-between gap-12 xl:flex-nowrap lg:flex-nowrap flex-wrap items-center bg-slate-800 p-4">
-							<img src={anime.images.webp["large_image_url"] || "https://via.placeholder.com/300/09f/fff.png"} className="w-auto h-auto" alt={anime.title} loading="lazy" />
-							<div className="w-full space-y-4">
+			<div className="xl:container lg:container w-full  mx-auto mt-12">
+				<section className=" text-white xl:w-3/4 lg:w-3/4 mx-auto w-full  p-4 rounded shadow">
+					<div className="w-full mx-auto">
+						<div className="flex xl:justify-between lg:justify-between justify-center gap-12 xl:flex-nowrap lg:flex-nowrap flex-wrap items-center bg-slate-800 p-4 w-full">
+							<img src={anime.images.webp["large_image_url"] || "https://via.placeholder.com/300/09f/fff.png"} className="w-auto h-auto" alt={anime.title} loading="lazy" onError={(e) => {
+								e.currentTarget.src = imageUnavailable;
+							}} />
+							<div className="xl:w-full lg:w-full w-96 space-y-4">
 								<div className="flex items-center">
 									<p className="text-xs mr-2 font-bold">{anime.type} &#9679;</p>
 									<p className="text-xs">
@@ -113,7 +116,7 @@ function Anime()
 										</span>
 									</p>
 								</div>
-								<h1 className="text-4xl font-bold leading-relaxed">{anime.title}</h1>
+								<h1 className="xl:text-4xl lg:text-2xl text-xl font-bold leading-relaxed">{anime.title}</h1>
 
 								<div>
 									<ul className="flex mt-2 space-x-2">

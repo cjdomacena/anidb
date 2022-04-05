@@ -4,6 +4,7 @@ import toast from 'react-hot-toast';
 import { Link } from 'react-router-dom';
 import { supabase } from '../../client';
 import { UserContext } from './../../context'
+import imageUnavailable from '../../assets/imageUnavailable.png'
 function Card({ props, isBookmarked, isFavorite, type = "primary" })
 {
 	const { session, setBookmarked, setFavorites, bookmarked, favorites } = useContext(UserContext);
@@ -114,7 +115,7 @@ function Card({ props, isBookmarked, isFavorite, type = "primary" })
 	return (
 		<div className="w-full p-4 hover:bg-slate-800 rounded  transition-colors">
 			<div className="w-full bg-slate-800 relative ">
-				<Link to={`/anime/${ parseTitle(props.title) }/${ props.mal_id }`} ><img src={props.images.webp["large_image_url"]} alt={props.title} className="w-full h-96 object-cover " loading='lazy' /></Link>
+				<Link to={`/anime/${ parseTitle(props.title) }/${ props.mal_id }`} ><img src={props.images.webp["large_image_url"]} onError={(e) => { e.currentTarget.src = imageUnavailable}} alt={props.title} className="w-full h-96 object-cover " loading='lazy' /></Link>
 				{type === 'primary' ? <div className='absolute top-1 left-1 w-auto p-2 justify-between items-center space-y-2 rounded z-50'>
 					<button className={`text-xs flex items-center group cursor-pointer p-1 rounded  ${ selectedFavorite ? 'bg-blue-700  ' : 'hover:bg-blue-700 bg-slate-900 ' } transition-colors`}
 						onClick={handleFavorites}
