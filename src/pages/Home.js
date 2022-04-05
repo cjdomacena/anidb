@@ -9,13 +9,12 @@ import { supabase } from "../client";
 import toast from "react-hot-toast";
 import { isFavorite, isBookmarked } from './../utils'
 
-
 function Home()
 {
 	const { ref, inView } = useInView();
 	const { session, setBookmarked, bookmarked, favorites, setFavorites } = useContext(UserContext);
 	const { data, isFetching, fetchNextPage, hasNextPage, isFetchingNextPage }
-		= useInfiniteQuery('seasonal', ({ pageParam = 0 }) => getCurrentSeason(pageParam), {
+		= useInfiniteQuery('seasonal', ({ pageParam = 1 }) => getCurrentSeason(pageParam), {
 			staleTime: 1000 * 60, refetchOnWindowFocus: false,
 			getNextPageParam: (lastPage, allPages) =>
 			{
@@ -26,45 +25,39 @@ function Home()
 		})
 
 
-	const getBookmarked = useCallback(async () =>
+	const getBookmarked = useCallback(async (session) =>
 	{
-		if (session)
+		const { data, error } = await supabase.from('bookmarks').select('bookmarked').match({ user_id: session.user.id });
+		if (error)
 		{
-			const { data, error } = await supabase.from('bookmarks').select('bookmarked').match({ user_id: session.user.id });
-			if (error)
-			{
-				toast.error(error.message);
-			} else
-			{
-				setBookmarked(data);
-			}
+			toast.error(error.message);
+		} else
+		{
+			setBookmarked(data);
 		}
 
-	}, [session, setBookmarked]);
 
-	const getFavorites = useCallback(async () =>
+	}, [setBookmarked]);
+
+	const getFavorites = useCallback(async (session) =>
 	{
-		if (session)
+		const { data, error } = await supabase.from('favorites')
+			.select('favorite')
+			.match({ user_id: session.user.id })
+		if (error)
 		{
-			const { data, error } = await supabase.from('favorites')
-				.select('favorite')
-				.match({ user_id: session.user.id })
-			if (error)
-			{
-				toast.error(error.message);
-			} else
-			{
-				setFavorites(data);
-			}
+			toast.error(error.message);
+		} else
+		{
+			setFavorites(data);
 		}
-
-	}, [session, setFavorites])
+	}, [setFavorites]);
 	useEffect(() =>
 	{
 		if (session && hasNextPage)
 		{
-			getBookmarked();
-			getFavorites();
+			getBookmarked(session);
+			getFavorites(session);
 		}
 		if (inView)
 		{
@@ -80,7 +73,10 @@ function Home()
 
 	return (
 		<section className="container mx-auto mt-12 text-white">
-			<h1 className="text-lg font-bold p-4">Current Season</h1>
+			<div className="flex items-center justify-between">
+				<h1 className="text-lg font-bold p-4">Current Season</h1>
+				{/* <SelectT /> */}
+			</div>
 			<div className="w-full grid grid-cols-[repeat(auto-fill,minmax(250px,1fr))] gap-4">
 				{(isFetching && !isFetchingNextPage) && <LoadingCards />}
 				{data?.pages.map((page, index) => (

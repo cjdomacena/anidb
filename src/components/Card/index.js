@@ -1,6 +1,7 @@
 import { BookmarkIcon, StarIcon } from '@heroicons/react/outline';
 import { useContext, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
+import { Link } from 'react-router-dom';
 import { supabase } from '../../client';
 import { UserContext } from './../../context'
 function Card({ props, isBookmarked, isFavorite, type = "primary" })
@@ -26,11 +27,13 @@ function Card({ props, isBookmarked, isFavorite, type = "primary" })
 				{
 					toast.success(`${ props.title
 						} successfully added to bookmarks!`, { className: "bg-slate-800 border rounded border-slate-800 text-white" })
+					setLoading(false);
 				} else
 				{
 					toast.error(error.message);
 					setLoading(false);
 				}
+
 			} else if (!current)
 			{
 				const { error } = await supabase.rpc('remove_bookmark', { 'm_id': props.mal_id });
@@ -45,7 +48,6 @@ function Card({ props, isBookmarked, isFavorite, type = "primary" })
 					toast.error(error.message)
 					setLoading(false);
 				}
-
 			}
 		} else
 		{
@@ -97,6 +99,11 @@ function Card({ props, isBookmarked, isFavorite, type = "primary" })
 		}
 	}
 
+	const parseTitle = (title) =>
+	{
+		return (title.split(/[ ,.\s]/).join("-")).toLowerCase();
+	}
+
 	useEffect(() =>
 	{
 		// Will change state when isBookmarked changes.
@@ -105,9 +112,9 @@ function Card({ props, isBookmarked, isFavorite, type = "primary" })
 	}, [isBookmarked, isFavorite])
 
 	return (
-		<div className="w-full p-4">
-			<div className="w-full bg-slate-800 relative">
-				<img src={props.images.webp["large_image_url"]} alt={props.title} className="w-full h-96 object-cover " />
+		<div className="w-full p-4 hover:bg-slate-800 rounded  transition-colors">
+			<div className="w-full bg-slate-800 relative ">
+				<Link to={`/anime/${ parseTitle(props.title) }/${ props.mal_id }`} ><img src={props.images.webp["large_image_url"]} alt={props.title} className="w-full h-96 object-cover " loading='lazy' /></Link>
 				{type === 'primary' ? <div className='absolute top-1 left-1 w-auto p-2 justify-between items-center space-y-2 rounded z-50'>
 					<button className={`text-xs flex items-center group cursor-pointer p-1 rounded  ${ selectedFavorite ? 'bg-blue-700  ' : 'hover:bg-blue-700 bg-slate-900 ' } transition-colors`}
 						onClick={handleFavorites}
@@ -122,7 +129,9 @@ function Card({ props, isBookmarked, isFavorite, type = "primary" })
 				</div> : ""}
 			</div>
 			<div className="h-auto w-full mt-2 space-y-4">
-				<p className="transition-all line-clamp-1 hover:line-clamp-none">{props.title}</p>
+				<Link to={`/anime/${ parseTitle(props.title) }/${ props.mal_id }`}>
+					<p className="transition-all line-clamp-1 hover:line-clamp-none">{props.title}</p>
+				</Link>
 				<div className='mt-2 space-y-2'>
 					<div className='flex justify-between'>
 						<span className='text-xs capitalize'>{props.season} &#183; {props.status}</span>
