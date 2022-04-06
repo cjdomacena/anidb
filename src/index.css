@@ -1,7 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,400;0,600;0,800;0,900;1,400&display=swap');
 html {
 	@apply bg-slate-900;
+	font-family: 'Montserrat', sans-serif;
 }

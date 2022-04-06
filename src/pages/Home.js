@@ -15,13 +15,14 @@ function Home()
 	const { session, setBookmarked, bookmarked, favorites, setFavorites } = useContext(UserContext);
 	const { data, isFetching, fetchNextPage, hasNextPage, isFetchingNextPage }
 		= useInfiniteQuery('seasonal', ({ pageParam = 1 }) => getCurrentSeason(pageParam), {
-			staleTime: 1000 * 60, refetchOnWindowFocus: false,
+			staleTime: 1000 * 60, refetchOnWindowFocus: true,
 			getNextPageParam: (lastPage, allPages) =>
 			{
 				const max_pages = lastPage.pagination.last_visible_page;
 				const next_page = allPages.length + 1;
 				return next_page <= max_pages ? next_page : undefined;
 			},
+			refetchOnMount: true
 		})
 
 
@@ -35,8 +36,6 @@ function Home()
 		{
 			setBookmarked(data);
 		}
-
-
 	}, [setBookmarked]);
 
 	const getFavorites = useCallback(async (session) =>
@@ -73,9 +72,8 @@ function Home()
 
 	return (
 		<section className="container mx-auto mt-12 text-white">
-			<div className="flex items-center justify-between">
+			<div className="flex items-center justify-between pt-12">
 				<h1 className="text-lg font-bold p-4">Current Season</h1>
-				{/* <SelectT /> */}
 			</div>
 			<div className="w-full grid grid-cols-[repeat(auto-fill,minmax(250px,1fr))] gap-4">
 				{(isFetching && !isFetchingNextPage) && <LoadingCards />}

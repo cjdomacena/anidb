@@ -25,3 +25,8 @@ export const isFavorite = (mal_id, favorite) =>
 
 	return false
 }
+
+export const parseTitle = (title) =>
+{
+	return (title.split(/[ ,.\s]/).join("-")).toLowerCase();
+}

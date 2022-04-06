@@ -22,16 +22,13 @@ function LoggedIn()
 	}
 	return (
 		<div className="space-x-4 flex items-center">
-			<NavLink to="/" className={({ isActive }) =>
-				isActive ? "bg-blue-700 p-2 rounded hover:bg-blue-900" : "hover:bg-blue-700 p-2 rounded"
-			}>Home</NavLink>
 			<NavLink to="/favorites" className={({ isActive }) =>
 				isActive ? "bg-blue-700 p-2 rounded hover:bg-blue-900" : "hover:bg-blue-700 p-2 rounded"
 			}>Favorites</NavLink>
 			<NavLink to="/bookmarks" className={({ isActive }) =>
 				isActive ? "bg-blue-700 p-2 rounded" : "hover:bg-blue-700 p-2 rounded"
 			}>Bookmarks</NavLink>
-			<button onClick={handleSignOut} className="bg-red-900 p-2 rounded hover:bg-red-700" type="button">Logout</button>
+			{/* <button onClick={handleSignOut} className="bg-red-900 p-2 rounded hover:bg-red-700" type="button">Logout</button> */}
 		</div >)
 }
 

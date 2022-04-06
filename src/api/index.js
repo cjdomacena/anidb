@@ -15,6 +15,13 @@ export const getCurrentSeason = async (page) =>
 	return res;
 }
 
+export const getTopAnime = async (page = 1, type=null, filter=null) => {
+	console.log(type)
+	const req = await fetch(`${BASE_URL}/top/anime?page=${page}&type=${type?.value}&filter=${null}`);
+	const res = await req.json();
+	return res;
+}
+
 export const getAnimeById = async (mal_id) =>
 {
 	const req = await fetch(`${ BASE_URL }/anime/${ mal_id }`);

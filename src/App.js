@@ -11,6 +11,7 @@ import Home from './pages/Home';
 import Login from './pages/Signup';
 import SuccessSignup from './pages/SuccessSignup';
 import Error from './pages/404';
+import TopAnime from './pages/TopAnime';
 
 function App()
 {
@@ -20,6 +21,7 @@ function App()
 				<Navbar />
 				<Routes>
 					<Route path='/' element={<Home />} />
+					<Route path='/top-anime' element={<TopAnime />}/>
 					<Route path='/error' element={<Error />} />
 					<Route path="/signup" element={<Login />} />
 					<Route path="/success-signup" element={<SuccessSignup />} />

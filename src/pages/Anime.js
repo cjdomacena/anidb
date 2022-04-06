@@ -3,6 +3,7 @@ import { useQuery } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import { getAnimeById } from "../api";
 import imageUnavailable from '../assets/imageUnavailable.png'
+import DisplayGenres from "../components/Badge/Genre";
 
 function Anime()
 {
@@ -19,14 +20,9 @@ function Anime()
 		navigate("/error");
 	}
 
-	const displayGenres = (genre) =>
-	{
-		return <li key={genre.name} className="text-xs bg-slate-700 p-1 rounded w-fit">{genre.name}</li>
-	}
 
 	const addBreaks = (paragraph) =>
 	{
-		// https://codeburst.io/adding-line-breaks-paragraphs-to-dynamic-text-in-javascript-569cc474c89
 		const periods = paragraph.split('.');
 		let max = 1;
 
@@ -119,9 +115,7 @@ function Anime()
 								<h1 className="xl:text-4xl lg:text-2xl text-xl font-bold leading-relaxed">{anime.title}</h1>
 
 								<div>
-									<ul className="flex mt-2 space-x-2">
-										{(Array.prototype.concat(anime.themes, anime.genres)).map((item) => displayGenres(item))}
-									</ul>
+									<DisplayGenres genres={Array.prototype.concat(anime.themes, anime.genres)} />
 								</div>
 								<div>
 									<h4 className="text-sm">Status</h4>
