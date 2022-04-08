@@ -23,7 +23,7 @@ function Navbar()
 				</ul>
 			</nav>
 
-			<div className={`w-full h-auto absolute bg-slate-800 left-0 z-50 p-4`}>
+			<div className={`w-full h-auto bg-slate-800 left-0 z-50 p-4`}>
 				<div className="w-fit mx-auto text-white">
 					<ul className="text-sm flex space-x-4">
 						<li><NavLink to="/" className={({isActive}) => `${ isActive ? "font-bold" : "" }`}>Current Season</NavLink></li>
