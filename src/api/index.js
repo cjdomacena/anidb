@@ -15,9 +15,9 @@ export const getCurrentSeason = async (page) =>
 	return res;
 }
 
-export const getTopAnime = async (page = 1, type=null, filter=null) => {
-	console.log(type)
-	const req = await fetch(`${BASE_URL}/top/anime?page=${page}&type=${type?.value}&filter=${null}`);
+export const getTopAnime = async (page = 1, type = null, filter = null) =>
+{
+	const req = await fetch(`${ BASE_URL }/top/anime?page=${ page }&type=${ type?.value }&filter=${ null }`);
 	const res = await req.json();
 	return res;
 }
@@ -29,8 +29,19 @@ export const getAnimeById = async (mal_id) =>
 	return res;
 }
 
-export const getAnimeGenres = async () => {
-	const req = await fetch(`${BASE_URL}/genres/anime`);
+export const getAnimeGenres = async () =>
+{
+	const req = await fetch(`${ BASE_URL }/genres/anime`);
 	const res = await req.json();
 	return res;
+}
+
+export const getAnimeSearch = async (q, isSFW) =>
+{
+	if (q.length > 2)
+	{
+		const req = await fetch(`${ BASE_URL }/anime?q=${ q }&page=1&limit=5&${ isSFW ? 'sfw' : "" }`)
+		const res = await req.json();
+		return res;
+	}
 }
