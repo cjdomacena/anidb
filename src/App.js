@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { Toaster } from 'react-hot-toast';
 import { Routes, Route, Outlet, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
@@ -12,13 +12,15 @@ import Login from './pages/Signup';
 import SuccessSignup from './pages/SuccessSignup';
 import Error from './pages/404';
 import TopAnime from './pages/TopAnime';
+import Search from './pages/Search';
 
 function App()
 {
+	const [isOpen, setIsOpen] = useState(false)
 	return (
 		<UserProvider>
-			<div>
-				<Navbar />
+			<div className='relative' id='container'>
+				<Navbar setIsOpen={setIsOpen} />
 				<Routes>
 					<Route path='/' element={<Home />} />
 					<Route path='/top-anime' element={<TopAnime />}/>
@@ -30,9 +32,9 @@ function App()
 						<Route path="/bookmarks" element={<Bookmarks />} />
 					</Route>
 					<Route path="anime/:title/:id" element={<Anime />} />
-
 				</Routes>
 			</div>
+			{isOpen && <Search className setIsOpen={setIsOpen}/>}
 			<Toaster position='bottom-center' />
 		</UserProvider>
 	)
