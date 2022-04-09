@@ -49,7 +49,7 @@ function useAuth()
 function ProtectedRoutes()
 {
 	const auth = useAuth();
-	return auth ? <Outlet /> : <Navigate to="/signup" />
+	return auth ? <Outlet /> : <Navigate to="/" />
 }
 
 export default App;

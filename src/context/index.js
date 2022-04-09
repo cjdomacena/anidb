@@ -32,6 +32,7 @@ export const UserProvider = ({ children }) =>
 			{
 				setSession(null)
 			}
+			setSession(session)
 		})
 	}, [])
 	return (
