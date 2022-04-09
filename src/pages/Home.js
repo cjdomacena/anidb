@@ -71,7 +71,7 @@ function Home()
 
 
 	return (
-		<section className="container mx-auto mt-12 text-white">
+		<section className="container mx-auto mt-0 text-white">
 			<div className="flex items-center justify-between pt-12">
 				<h1 className="text-lg font-bold p-4">Current Season</h1>
 			</div>
