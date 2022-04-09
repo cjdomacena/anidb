@@ -20,7 +20,6 @@ function Navbar({setIsOpen})
 
 						{session === null ? <>
 							<Link to="/signup" className="border border-blue-600 bg-blue-600 px-6 py-2 rounded font-semibold">Login</Link>
-							{/* <Link to="/signup" className="border border-blue-600  px-6 py-2 rounded font-semibold">Signup</Link> */}
 						</> : <LoggedIn />}
 					</li>
 
@@ -32,8 +31,6 @@ function Navbar({setIsOpen})
 					<ul className="text-sm flex space-x-4">
 						<li><NavLink to="/" className={({ isActive }) => `${ isActive ? "font-bold" : "" }`}>Current Season</NavLink></li>
 						<li><NavLink to="/top-anime" className={({ isActive }) => `${ isActive ? "font-bold" : "" }`}>Top Anime</NavLink></li>
-						<li>Schedule</li>
-						<li>Random Anime</li>
 					</ul>
 				</div>
 			</div>

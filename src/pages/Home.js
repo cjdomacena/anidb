@@ -75,7 +75,7 @@ function Home()
 			<div className="flex items-center justify-between pt-12">
 				<h1 className="text-lg font-bold p-4">Current Season</h1>
 			</div>
-			<div className="w-full grid grid-cols-[repeat(auto-fill,minmax(250px,1fr))] gap-4">
+			<div className="w-full grid grid-cols-[repeat(auto-fill,minmax(271px,1fr))] place-items-center sm:place-items-start md:place-items-start lg:place-items-start xl:place-items-start gap-4">
 				{(isFetching && !isFetchingNextPage) && <LoadingCards />}
 				{data?.pages.map((page, index) => (
 					<React.Fragment key={index}>

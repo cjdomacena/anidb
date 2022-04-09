@@ -40,7 +40,7 @@ export const getAnimeSearch = async (q, isSFW) =>
 {
 	if (q.length > 2)
 	{
-		const req = await fetch(`${ BASE_URL }/anime?q=${ q }&page=1&limit=5&${ isSFW ? 'sfw' : "" }`)
+		const req = await fetch(`${ BASE_URL }/anime?q=${ q }&page=1&limit=8&${ isSFW ? 'sfw' : "" }`)
 		const res = await req.json();
 		return res;
 	}

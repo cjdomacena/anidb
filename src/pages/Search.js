@@ -60,8 +60,8 @@ function Search({ setIsOpen })
 	}, [setIsOpen])
 
 	return (
-		<section className="fixed h-screen top-0 w-full left-0  z-50 grid justify-center bg-slate-900/60 " onKeyDown={handleToggle} >
-			<div className="w-screen  h-fit mt-44 p-4 " >
+		<section className="fixed h-screen top-0 w-full left-0  z-50 grid justify-center bg-slate-900/60" onKeyDown={handleToggle} >
+			<div className="w-screen  h-fit mt-12 p-4 " >
 				<div className="w-4/4 max-w-3xl mx-auto text-slate-100" ref={containerRef}>
 					<div className='flex justify-center w-full bg-slate-800 px-4 py-2 items-center rounded'>
 						<div className='border-r pr-2 border-r-slate-500'>
@@ -81,7 +81,7 @@ function Search({ setIsOpen })
 							<button className='text-[10px] bg-slate-600 text-slate-300 p-1 rounded' onClick={() => setIsOpen(false)}>ESC</button>
 						</div>
 					</div>
-					<div className='mt-1'>
+					<div className='mt-1 overflow-y-scroll h-[500px] scrollbar scrollbar-thumb-gray-900 scrollbar-track-gray-100 scrollbar-thin rounded scroll-smooth'>
 						{query.length > 0 ? <>
 							{isFetched && (data.data).length === 0 ? <div className='p-4 bg-slate-800 text-center text-sm text-neutral-400'>{query} not found in anime</div> : ""}
 							{data ? data.data.map((anime, index) => <SearchCard props={anime} key={index} setIsOpen={setIsOpen} />
