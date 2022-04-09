@@ -81,7 +81,7 @@ function Search({ setIsOpen })
 							<button className='text-[10px] bg-slate-600 text-slate-300 p-1 rounded' onClick={() => setIsOpen(false)}>ESC</button>
 						</div>
 					</div>
-					<div className='mt-1 overflow-y-scroll h-[500px] scrollbar scrollbar-thumb-gray-900 scrollbar-track-gray-100 scrollbar-thin rounded scroll-smooth'>
+					<div className='mt-1 overflow-y-auto h-[500px] scrollbar scrollbar-thumb-gray-900 scrollbar-track-gray-100 scrollbar-thin rounded scroll-smooth'>
 						{query.length > 0 ? <>
 							{isFetched && (data.data).length === 0 ? <div className='p-4 bg-slate-800 text-center text-sm text-neutral-400'>{query} not found in anime</div> : ""}
 							{data ? data.data.map((anime, index) => <SearchCard props={anime} key={index} setIsOpen={setIsOpen} />
