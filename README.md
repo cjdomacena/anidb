@@ -3,8 +3,8 @@
 ### Members:
 - cjdomacena (@cjdomacena2)
 
-#### Description
-
+### Description
+- Allows user to bookmark or keep track of their favorite anime!
 
 ### Supabase toolkit
 - Auth: Supabase's authentication w/ magic link.
