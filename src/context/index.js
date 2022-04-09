@@ -30,7 +30,9 @@ export const UserProvider = ({ children }) =>
 			}
 			if (_event === 'SIGNED_OUT')
 			{
-				setSession(null)
+				setSession(null);
+				setBookmarked(null)
+				setFavorites(null)
 			}
 			setSession(session)
 		})
