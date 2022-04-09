@@ -23,36 +23,42 @@ function Anime()
 
 	const addBreaks = (paragraph) =>
 	{
-		const periods = paragraph.split('.');
-		let max = 1;
 
-		if (periods.length > 6 && periods.length < 24)
+		if (paragraph)
 		{
-			max = 3;
-		} else if (periods.length > 24 && periods.length < 36)
-		{
-			max = 4;
-		} else if (periods.length > 36)
-		{
-			max = 5;
-		} else
-		{
-			max = 1;
-		}
-		let tempArr = [];
-		let temp = [];
-		let stop = Math.round(periods.length / max);
-		// let i = Math.round(periods / 4);
-		for (let i = 0; i < periods.length; i++)
-		{
-			temp.push(periods[i]);
-			if (i % stop === 0)
+			const periods = paragraph.split('.');
+			let max = 1;
+
+			if (periods.length > 6 && periods.length < 24)
 			{
-				tempArr.push(temp.join('.'));
-				temp = [];
+				max = 3;
+			} else if (periods.length > 24 && periods.length < 36)
+			{
+				max = 4;
+			} else if (periods.length > 36)
+			{
+				max = 5;
+			} else
+			{
+				max = 1;
 			}
+			let tempArr = [];
+			let temp = [];
+			let stop = Math.round(periods.length / max);
+			// let i = Math.round(periods / 4);
+			for (let i = 0; i < periods.length; i++)
+			{
+				temp.push(periods[i]);
+				if (i % stop === 0)
+				{
+					tempArr.push(temp.join('.'));
+					temp = [];
+				}
+			}
+			return tempArr
 		}
-		return tempArr
+		return ["No synopsis available"]
+
 	}
 
 	const ShowParagraph = ({ paragraph }) =>
@@ -101,7 +107,8 @@ function Anime()
 				<section className=" text-white xl:w-3/4 lg:w-3/4 mx-auto w-full  p-4 rounded shadow">
 					<div className="w-full mx-auto">
 						<div className="flex xl:justify-between lg:justify-between justify-center gap-12 xl:flex-nowrap lg:flex-nowrap flex-wrap items-center bg-slate-800 p-4 w-full">
-							<img src={anime.images.webp["large_image_url"] || "https://via.placeholder.com/300/09f/fff.png"} className="w-auto h-auto" alt={anime.title} loading="lazy" onError={(e) => {
+							<img src={anime.images.webp["large_image_url"] || "https://via.placeholder.com/300/09f/fff.png"} className="w-auto h-auto" alt={anime.title} loading="lazy" onError={(e) =>
+							{
 								e.currentTarget.src = imageUnavailable;
 							}} />
 							<div className="xl:w-full lg:w-full w-96 space-y-4">
